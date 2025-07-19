@@ -1,4 +1,3 @@
-import numpy as np
 import math
 import cmath
 
@@ -176,8 +175,8 @@ def multiply_large_numbers(a, b):
     a_padded = a + [0] * (size - len(a))
     b_padded = b + [0] * (size - len(b))
     
-    ntt_a = ntt(a_padded[:])
-    ntt_b = ntt(b_padded[:])
+    ntt_a = ntt(a_padded)
+    ntt_b = ntt(b_padded)
     
     # 점별 곱셈
     MOD = 998244353
@@ -201,3 +200,42 @@ def multiply_large_numbers(a, b):
         result.pop()
     
     return int(''.join(map(str, result[::-1])))
+
+def poly_power(base, exponent):
+    result = [1]
+    while exponent > 0:
+        if exponent % 2 == 1:
+            result = convolution_ntt(result, base)
+        base = convolution_ntt(base, base)
+        exponent //= 2
+    return result
+
+def set_sums(A, B):
+    max_val = max(A) + max(B)
+    size = 1
+    while size <= max_val:
+        size <<= 1
+
+    fa = [0] * size
+    fb = [0] * size
+
+    for a in A:
+        fa[a] = 1
+    for b in B:
+        fb[b] = 1
+
+    conv = convolution_ntt(fa, fb)
+
+    result = [i for i, val in enumerate(conv) if val > 0]
+    return result
+
+def poly_power_bool(base, exponent):
+    result = [1]
+    while exponent > 0:
+        if exponent % 2 == 1:
+            result = convolution_ntt(result, base)
+            result = [1 if x > 0 else 0 for x in result]
+        base = convolution_ntt(base, base)
+        base = [1 if x > 0 else 0 for x in base]
+        exponent //= 2
+    return result
