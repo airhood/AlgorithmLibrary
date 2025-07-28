@@ -2,7 +2,7 @@ import sys
 input = sys.stdin.readline.rstrip('\r\n')
 
 
-import os, io, sys
+import os, io
 input = io.BytesIO(os.read(0, os.fstat(0).st_size)).readline
 
 

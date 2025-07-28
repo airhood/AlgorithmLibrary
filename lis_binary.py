@@ -1,12 +1,4 @@
-def lower_bound(arr, x):
-    left, right = 0, len(arr)
-    while left < right:
-        mid = (left + right) // 2
-        if arr[mid] < x:
-            left = mid + 1
-        else:
-            right = mid
-    return left
+import bisect
 
 def lis(arr):
     tail = []
@@ -14,7 +6,7 @@ def lis(arr):
     prev_idx = [-1] * len(arr)
 
     for i in range(len(arr)):
-        idx = lower_bound(tail, arr[i])
+        idx = bisect.bisect_left(tail, arr[i])
 
         if idx == len(tail):
             tail.append(arr[i])
